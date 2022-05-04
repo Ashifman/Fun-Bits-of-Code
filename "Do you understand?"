@@ -1,0 +1,2 @@
+for i in range (-5,4):
+    print ("this number is",i, "do you understand?")
