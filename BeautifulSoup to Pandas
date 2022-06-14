@@ -1,24 +1,24 @@
 from bs4 import BeautifulSoup as bs
 import requests
+import pandas as pd
+
 url = 'https://www.comicsexperience.com/scripts/'
 html = requests.get(url)
 soup = bs(html.content, 'html.parser')
-h2s= soup.find_all('h2')
+h2s= soup.find_all('h2') #when looking for the names of comics authors I saw they all lived under buttons, which was the child of h2
 comic_writers = []
 
 for h2 in h2s:
-    buttons = h2.find_all('button')
+    buttons = h2.find_all('button') #I used this method to get all of everything under button, not just the first instance pf <button></button>
     for name in buttons:
         author=name.text.strip()
         if len(author) <30:
             comic_writers.append(author)
 
-import pandas as pd
-df = pd.DataFrame(comic_writers,columns = ['names'])
 
 first = []
 last = []
-for i in comic_writers:
+for i in comic_writers: #the author names came as 'last,first' and I wanted to get the data to print out as two columns
     v= i.split(',')
     first.append(v[1])
     last.append(v[0])
