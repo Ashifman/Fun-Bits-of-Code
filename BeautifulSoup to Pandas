@@ -1,0 +1,27 @@
+from bs4 import BeautifulSoup as bs
+import requests
+url = 'https://www.comicsexperience.com/scripts/'
+html = requests.get(url)
+soup = bs(html.content, 'html.parser')
+h2s= soup.find_all('h2')
+comic_writers = []
+
+for h2 in h2s:
+    buttons = h2.find_all('button')
+    for name in buttons:
+        author=name.text.strip()
+        if len(author) <30:
+            comic_writers.append(author)
+
+import pandas as pd
+df = pd.DataFrame(comic_writers,columns = ['names'])
+
+first = []
+last = []
+for i in comic_writers:
+    v= i.split(',')
+    first.append(v[1])
+    last.append(v[0])
+    
+names= pd.DataFrame(first, columns = ['first'])
+names['last']= last
